@@ -9,15 +9,20 @@ void main(){
 	
 	printaGrafo(g);
 	
-	if(insereAresta(g, 2, 3)) printf("Aresta inserida com sucesso");
+	if(insereAresta(g, 2, 3, 1)) printf("Aresta inserida com sucesso");
 	printaGrafo(g);
 	
-	if(insereAresta(g, 4, 3)) printf("\nAresta inserida com sucesso");
+	if(insereAresta(g, 4, 3, 1)) printf("\nAresta inserida com sucesso");
 	printaGrafo(g);
 	
-	if(insereAresta(g, 2, 3)) printf("\nAresta inserida com sucesso");
+	if(insereAresta(g, 2, 3, 1)) printf("\nAresta inserida com sucesso");
 	printaGrafo(g);
 	
-	buscaProfundidade(g);
+	if (checaAdjacencia(g, 2)) printf("\nEncontrado o Vertice %d Entre os adjacentes de 2", checaAdjacencia(g, 2));
+	else printf ("Nao foram encontrados nenhum vertice adjacente a 2");
+	
+	
+	buscaProfundidade(g,0,-2,0);
+
 	
 }

@@ -12,9 +12,12 @@
 #include <malloc.h>
 
 typedef int TipoPeso;
+typedef int NO;
+typedef int CORES;
 
 typedef struct {
 	TipoPeso mat[MAXNUMVERTICES + 1][MAXNUMVERTICES + 1];
+	CORES cores[MAXNUMVERTICES + 1];
 	int numVertices;
 	int numArestas;
 	
@@ -36,9 +39,11 @@ bool inicializaGrafo (TipoGrafo* g, int nv){
 	}
 	g->numVertices = nv;
 	int i, j;
-	for(i = 0; i<=nv; i++)
+	for(i = 0; i<=nv; i++){
+		g->cores[i] = BRANCO;
 		for (j = 0; j<=nv; j++)
 		g->mat[i][j] = AN;
+			}
 	return true;
 }
 
@@ -66,7 +71,7 @@ void printaGrafo (TipoGrafo* g){
 
 /*Insere uma aresta no grafo */
 
-bool insereAresta(TipoGrafo *g, int vInicial, int vFinal){
+bool insereAresta(TipoGrafo *g, int vInicial, int vFinal, int peso){
 	if(vInicial > g->numVertices){
 		printf("valor do Vertice Inicial acima do numero de vertices do grafo : %d", g->numVertices);
 		return false;
@@ -84,12 +89,16 @@ bool insereAresta(TipoGrafo *g, int vInicial, int vFinal){
 		return false;
 	}
 	
-	if(g->mat[vInicial][vFinal] == 1){
+	if(g->mat[vInicial][vFinal] !=0 ){
 		printf("Ja existe uma aresta identica a estes vertices");
 		return false;
 	}
-	
-	g->mat[vInicial][vFinal] = 1;
+	if(peso <= 0){
+		printf("Valor Invalido para insercao: %d", peso);
+		return false;
+	}
+	g->mat[vInicial][vFinal] = peso;
+	g->numArestas++;
 	return true;	
 }
 
@@ -118,34 +127,41 @@ bool removeAresta(TipoGrafo *g, int vInicial, int vFinal){
 		return false;
 	}
 	
-	g->mat[vInicial][vFinal] = 0;
+	
+	g->mat[vInicial][vFinal] = -1;
+	g->numArestas--;
 	return true;	
 	
 }
 
-void buscaProfundidade (TipoGrafo* g){
-	int nv = g->numVertices;
-	int cores[nv];
-	int passos = 0;
-	int vAtual = 0;
-	int i,j;
-	for(i = 0; i<nv; i++)
-	cores[i] = BRANCO;
+NO checaAdjacencia (TipoGrafo* g, NO analisando){
+	NO i;
 	
-	int iter = 0;
-	while(vAtual<nv){
-		
-	//TODO...
-	
-	
-	for(j = 0; j<nv; j++)
-	printf("cores[%d]: %d", j, cores[j]);
-	
-	
-	
-	
+	for(i = 0; i<g->numVertices; i++)
+		if(g->mat[analisando][i] != -1 && g->cores[i] == BRANCO) return i;
+	return -1;
+}
+
+void buscaProfundidade (TipoGrafo* g, NO vInicial, NO vBuscado, int cont){
+	printf("\nBusca Chamada para vInicial = %d, e contador = %d", vInicial, cont);
+	if (vInicial > g->numVertices) return;
+	cont++;	
+	if (vInicial==vBuscado) return;
+	int corAtual = g->cores[vInicial];
+	if (corAtual == PRETO) buscaProfundidade (g, vInicial+1, vBuscado, cont);
+	NO adj = checaAdjacencia(g, vInicial);
+	if (adj >= 0 ) {
+		g->cores[vInicial] = CINZA;
+		buscaProfundidade (g, adj, vBuscado, cont);
+	}
+	else {
+		g->cores[vInicial] = PRETO;
+		buscaProfundidade(g, vInicial+1, vBuscado, cont);
+	}	
 	
 }
+
+
 
 
 
