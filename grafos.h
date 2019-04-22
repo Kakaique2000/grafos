@@ -71,28 +71,23 @@ void printaGrafo (TipoGrafo* g){
 
 bool insereAresta(TipoGrafo *g, int vInicial, int vFinal, int peso){
 	if(vInicial > g->numVertices){
-		printf("valor do Vertice Inicial acima do numero de vertices do grafo : %d", g->numVertices);
+		printf("\nvalor do Vertice Inicial acima do numero de vertices do grafo : %d", g->numVertices);
 		return false;
 	}
-	if(vInicial <= 0){
-		printf("valor do Vertice Inicial nao pode ser negativo");
+	if(vInicial < 0){
+		printf("\nvalor do Vertice Inicial nao pode ser negativo");
 		return false;
 	}
 	if(vFinal > g->numVertices){
-		printf("valor do Vertice Final acima do numero de vertices do grafo : %d", g->numVertices);
+		printf("\nvalor do Vertice Final acima do numero de vertices do grafo : %d", g->numVertices);
 		return false;
 	}
-	if(vFinal <= 0){
-		printf("valor do Vertice Final nao pode ser negativo");
-		return false;
-	}
-	
-	if(g->mat[vInicial][vFinal] !=-1 ){
-		printf("Ja existe uma aresta identica a estes vertices");
+	if(vFinal < 0){
+		printf("\nvalor do Vertice Final nao pode ser negativo");
 		return false;
 	}
 	if(peso < 0){
-		printf("Valor Invalido para insercao: %d", peso);
+		printf("\nValor Invalido para insercao: %d", peso);
 		return false;
 	}
 	g->mat[vInicial][vFinal] = peso;
@@ -104,24 +99,24 @@ bool insereAresta(TipoGrafo *g, int vInicial, int vFinal, int peso){
 
 bool removeAresta(TipoGrafo *g, int vInicial, int vFinal){
 	if(vInicial > g->numVertices){
-		printf("valor do Vertice Inicial acima do numero de vertices do grafo : %d", g->numVertices);
+		printf("nvalor do Vertice Inicial acima do numero de vertices do grafo : %d", g->numVertices);
 		return false;
 	}
-	if(vInicial <= 0){
-		printf("valor do Vertice Inicial nao pode ser negativo");
+	if(vInicial < 0){
+		printf("\nvalor do Vertice Inicial nao pode ser negativo");
 		return false;
 	}
 	if(vFinal > g->numVertices){
-		printf("valor do Vertice Final acima do numero de vertices do grafo : %d", g->numVertices);
+		printf("\nvalor do Vertice Final acima do numero de vertices do grafo : %d", g->numVertices);
 		return false;
 	}
-	if(vFinal <= 0){
-		printf("valor do Vertice Final nao pode ser negativo");
+	if(vFinal < 0){
+		printf("\nvalor do Vertice Final nao pode ser negativo");
 		return false;
 	}
 	
 	if(g->mat[vInicial][vFinal] != 1){
-		printf("Nao existe aresta nestes vertices");
+		printf("\nNao existe aresta nestes vertices");
 		return false;
 	}
 	
@@ -139,10 +134,13 @@ NO checaAdjacencia (TipoGrafo* g, int analisando){
 	return -1;
 }
 
-void prin (TipoGrafo* g) {
+void prin (TipoGrafo* g, TipoGrafo* arvore) {
+     
      int conhecidos[g->numVertices];
      int custo[g->numVertices];
      int anterior[g->numVertices];
+     inicializaGrafo(arvore, g->numVertices);
+     int verticesAdicionados = 0;
      
      int i;
      for(i = 0; i<g->numVertices; i++){
@@ -151,16 +149,40 @@ void prin (TipoGrafo* g) {
             anterior[i]=-1;
      }
      int vInicial = 0;
-     for(i = 0; i<g->numVertices; i++){
-           if(g->mat[vInicial][i] !=1 {
-               //Implementar  o registro do vertice e a comparação do peso, etc.                       
-           }
+     int vAtual = vInicial;
      
-           
+     while(verticesAdicionados != g->numVertices){
+    
+         //Torna o vértice em análise conhecido
+         conhecidos[vAtual] = true;
+     
+         //Verifica os vizinhos do vertice em questão   
+         for(i = 0; i<g->numVertices; i++){
+            if(g->mat[vAtual][i] != -1) {
+                   //Se o custo for menor ele muda
+                if(g->mat[vAtual][i]<custo[i]){
+                     custo[i] = g->mat[vAtual][i];
+                     anterior[i] = vAtual;
+                }  
+            }    
+         }
+
+         //Cicla pelos custos e vai pro vértice que tem o menor peso NAO VISITADO
+        int menorPesoNaoVisitado = 9999999;
+         int menorPesoNaoVisitadoIndex;
+         for (i = 0; i<g->numVertices; i++){
+        
+         	if(!conhecidos[i] && custo[i]<menorPesoNaoVisitado){
+         		menorPesoNaoVisitado = custo[i];
+         		menorPesoNaoVisitadoIndex = i;
+         	}
+         }
+         insereAresta(arvore, anterior[menorPesoNaoVisitadoIndex], menorPesoNaoVisitadoIndex, menorPesoNaoVisitado);
+         vAtual=menorPesoNaoVisitadoIndex;  
+         verticesAdicionados++;
+         
      }
-     
-     
-     
+       
      
      
 }
