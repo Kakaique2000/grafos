@@ -20,8 +20,6 @@ typedef struct {
 	CORES cores[MAXNUMVERTICES + 1];
 	int numVertices;
 	int numArestas;
-	
-	
 } TipoGrafo;
 
 typedef int TipoApontador;
@@ -62,7 +60,7 @@ void printaGrafo (TipoGrafo* g){
 		if(i!=-1) printf("\n%d ", i);
 		for(j = 0; j<nv; j++){
 			if (i==-1) printf("  %d", j);
-			else if (g->mat[i][j] == -1) printf(" %d", g->mat[i][j]);
+			else if (g->mat[i][j] == -1) printf("   ", g->mat[i][j]);
 			else printf("  %d", g->mat[i][j]);
 		}
 	}
@@ -89,11 +87,11 @@ bool insereAresta(TipoGrafo *g, int vInicial, int vFinal, int peso){
 		return false;
 	}
 	
-	if(g->mat[vInicial][vFinal] !=0 ){
+	if(g->mat[vInicial][vFinal] !=-1 ){
 		printf("Ja existe uma aresta identica a estes vertices");
 		return false;
 	}
-	if(peso <= 0){
+	if(peso < 0){
 		printf("Valor Invalido para insercao: %d", peso);
 		return false;
 	}
@@ -134,35 +132,38 @@ bool removeAresta(TipoGrafo *g, int vInicial, int vFinal){
 	
 }
 
-NO checaAdjacencia (TipoGrafo* g, NO analisando){
-	NO i;
-	
+NO checaAdjacencia (TipoGrafo* g, int analisando){
+	NO i;	
 	for(i = 0; i<g->numVertices; i++)
 		if(g->mat[analisando][i] != -1 && g->cores[i] == BRANCO) return i;
 	return -1;
 }
 
-void buscaProfundidade (TipoGrafo* g, NO vInicial, NO vBuscado, int cont){
-	printf("\nBusca Chamada para vInicial = %d, e contador = %d", vInicial, cont);
-	if (vInicial > g->numVertices) return;
-	cont++;	
-	if (vInicial==vBuscado) return;
-	int corAtual = g->cores[vInicial];
-	if (corAtual == PRETO) buscaProfundidade (g, vInicial+1, vBuscado, cont);
-	NO adj = checaAdjacencia(g, vInicial);
-	if (adj >= 0 ) {
-		g->cores[vInicial] = CINZA;
-		buscaProfundidade (g, adj, vBuscado, cont);
-	}
-	else {
-		g->cores[vInicial] = PRETO;
-		buscaProfundidade(g, vInicial+1, vBuscado, cont);
-	}	
-	
+void prin (TipoGrafo* g) {
+     int conhecidos[g->numVertices];
+     int custo[g->numVertices];
+     int anterior[g->numVertices];
+     
+     int i;
+     for(i = 0; i<g->numVertices; i++){
+            conhecidos[i] = false;
+            custo[i] = 999999;
+            anterior[i]=-1;
+     }
+     int vInicial = 0;
+     for(i = 0; i<g->numVertices; i++){
+           if(g->mat[vInicial][i] !=1 {
+               //Implementar  o registro do vertice e a comparação do peso, etc.                       
+           }
+     
+           
+     }
+     
+     
+     
+     
+     
 }
-
-
-
 
 
 
