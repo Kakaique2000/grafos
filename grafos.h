@@ -20,6 +20,7 @@ typedef struct {
 	CORES cores[MAXNUMVERTICES + 1];
 	int numVertices;
 	int numArestas;
+	int pesoTotal;
 } TipoGrafo;
 
 typedef int TipoApontador;
@@ -42,6 +43,7 @@ bool inicializaGrafo (TipoGrafo* g, int nv){
 		for (j = 0; j<=nv; j++)
 		g->mat[i][j] = AN;
 			}
+	g->pesoTotal = 0;
 	return true;
 }
 
@@ -65,6 +67,40 @@ void printaGrafo (TipoGrafo* g){
 		}
 	}
 	printf("\n");
+}
+
+void printaGrafo2(TipoGrafo *g){
+         	int nv = g->numVertices;
+	int i,j;
+	
+	
+printf("\n%d %d", g->numVertices, g->numArestas);
+for(i = 0; i<nv; i++){
+      for(j = 0; j<nv; j++){
+            
+            if(g->mat[i][j] == -1) continue;
+            else printf("\n%d %d %d",i,j,g->mat[i][j]);
+            
+            }
+      }
+      printf("\n");
+}
+
+void printaGrafo3 (TipoGrafo *g){
+         	int nv = g->numVertices;
+	int i,j;
+	
+	
+printf("\n%d", g->pesoTotal);
+for(i = 0; i<nv; i++){
+      for(j = 0; j<nv; j++){
+            
+            if(g->mat[i][j] == -1) continue;
+            else printf("\n%d %d",i,j);
+            
+            }
+      }
+      printf("\n");
 }
 
 /*Insere uma aresta no grafo */
@@ -91,6 +127,7 @@ bool insereAresta(TipoGrafo *g, int vInicial, int vFinal, int peso){
 		return false;
 	}
 	g->mat[vInicial][vFinal] = peso;
+	g->pesoTotal += peso;
 	g->numArestas++;
 	return true;	
 }
@@ -120,7 +157,7 @@ bool removeAresta(TipoGrafo *g, int vInicial, int vFinal){
 		return false;
 	}
 	
-	
+	g->pesoTotal -= g->mat[vInicial][vFinal];
 	g->mat[vInicial][vFinal] = -1;
 	g->numArestas--;
 	return true;	
@@ -145,13 +182,14 @@ void prin (TipoGrafo* g, TipoGrafo* arvore) {
      int i;
      for(i = 0; i<g->numVertices; i++){
             conhecidos[i] = false;
-            custo[i] = 999999;
+            custo[i] = 9999999;
             anterior[i]=-1;
      }
      int vInicial = 0;
      int vAtual = vInicial;
      
-     while(verticesAdicionados != g->numVertices){
+     //Até o numero de vertices adicionados não for o mesmo numero de vertices
+     while(verticesAdicionados < g->numVertices-1){
     
          //Torna o vértice em análise conhecido
          conhecidos[vAtual] = true;
@@ -166,24 +204,35 @@ void prin (TipoGrafo* g, TipoGrafo* arvore) {
                 }  
             }    
          }
-
-         //Cicla pelos custos e vai pro vértice que tem o menor peso NAO VISITADO
-        int menorPesoNaoVisitado = 9999999;
+        //Cicla pelos custos e vai pro vértice que tem o menor peso NAO VISITADO
+        int menorPesoNaoVisitado = 999999;
          int menorPesoNaoVisitadoIndex;
+         
          for (i = 0; i<g->numVertices; i++){
         
+        //Se o vértice i não for conhecido e o custo dele for menor que 9999999 ele guarda os valores
          	if(!conhecidos[i] && custo[i]<menorPesoNaoVisitado){
          		menorPesoNaoVisitado = custo[i];
          		menorPesoNaoVisitadoIndex = i;
-         	}
+         	//	printf("\nMenor Peso nao visitado foi o %d, para o vertice %i", custo[i], i);
+         	        
+          	}
          }
-         insereAresta(arvore, anterior[menorPesoNaoVisitadoIndex], menorPesoNaoVisitadoIndex, menorPesoNaoVisitado);
+     
+         
+      
+         
+          
+         insereAresta(arvore, anterior[menorPesoNaoVisitadoIndex], menorPesoNaoVisitadoIndex, custo[menorPesoNaoVisitadoIndex]);
+         printf("\nAresta adicionada: %d %d %d", anterior[menorPesoNaoVisitadoIndex], menorPesoNaoVisitadoIndex, custo[menorPesoNaoVisitadoIndex]);
          vAtual=menorPesoNaoVisitadoIndex;  
          verticesAdicionados++;
          
      }
-       
      
+       // for(i = 0; i<g->numVertices; i++){
+          //      if(conhecidos[i] && anterior[i]!=-1)   insereAresta(arvore, anterior[i], i, custo[i]);
+          //     }
      
 }
 
