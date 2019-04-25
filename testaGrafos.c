@@ -41,10 +41,15 @@ int main(int argc, char *argv[]){
 
 
   decodificaGrafo(g, arquivoContent);
-  prin(g, arvore);
-  gravaArquivo(grafoOutput, arvore);
   
   
+  
+  //prin(g, arvore);
+ 
+  //gravaArquivo(grafoOutput, arvore);
+  buscaLargura(g, 0);
+  
+  system("PAUSE");
 
 	
 }

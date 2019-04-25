@@ -6,6 +6,7 @@
 #define BRANCO 0
 #define CINZA 1
 #define PRETO 2
+#define INFINITO 99999
 
 #include <stdbool.h>
 #include <stdio.h>
@@ -25,6 +26,46 @@ typedef struct {
 } TipoGrafo;
 
 typedef int TipoApontador;
+
+void visitaLargura(int vertice, TipoGrafo* g, int* cores, int* antecessor, int* distancias){
+     int i;
+     int nv = g-> numVertices;
+     
+     cor[vertice] = CINZA;
+     distancias[vertice] = 0;
+      
+     }
+
+
+void buscaLargura(TipoGrafo* g, int vInicial){
+     
+     int nv = g-> numVertices;
+     int cores[nv];
+     int distancias[nv];
+     int antecessor[nv];
+     int i;
+     for(i = 0; i<nv; i++){
+            cores[i] = BRANCO;
+            distancias[i] = INFINITO;
+            antecessor[i] = AN;         
+            }
+            
+     for(i = 0; i<nv; i++){
+           if(cores[i] == BRANCO) visitaLargura(i, g, cores, antecessor, distancias);
+           }
+           
+     // Printa a Busca
+      for(i = 0; i<nv; i++){
+           printf("Vertice: %d | Cor: %d | antecessor: %d | Distancia do vInicial: %d\n", i, cores[i], antecessor[i], distancias[i]);
+           }       
+}
+
+
+
+
+
+
+
 
 /* Inicializa o Grafo g (Ja alocado) e coloca o valor de AN em cada vértice */
 
