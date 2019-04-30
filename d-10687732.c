@@ -168,13 +168,7 @@ bool removeAresta(TipoGrafo *g, int vInicial, int vFinal){
 	
 }
 
-NO checaAdjacencia (TipoGrafo* g, int analisando){
-	NO i;	
-	for(i = 0; i<g->numVertices; i++)
-		if(g->mat[analisando][i] != -1 && g->cores[i] == BRANCO) return i;
-	return -1;
-}
-
+//pega a string do grafo crua e obtem um grafo não direcionado dela
 TipoGrafo decodificaGrafo(TipoGrafo *g, char grafo[]){
 
          int init_size = strlen(grafo);
@@ -215,6 +209,7 @@ TipoGrafo decodificaGrafo(TipoGrafo *g, char grafo[]){
                
 }
 
+//Gera um arquivo e o fecha
 void gravaArquivo(FILE * f, TipoGrafo * g){
    
      	int nv = g->numVertices;
@@ -293,11 +288,8 @@ void prin (TipoGrafo* g, TipoGrafo* arvore) {
          verticesAdicionados++;
          
      }
-     
-       // for(i = 0; i<g->numVertices; i++){
-          //      if(conhecidos[i] && anterior[i]!=-1)   insereAresta(arvore, anterior[i], i, custo[i]);
-          //     }
 }
+
 
 int main(int argc, char *argv[]){
 	
